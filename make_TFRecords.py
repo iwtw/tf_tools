@@ -19,9 +19,9 @@ def create_record(data_path_list,output_path):
 
     for index, path in enumerate(data_path_list):
         label = path.split('/')[-2]
-        img = imread(  path )
-       # img = img.resize((28, 28))
-        img_raw = img.tobytes() 
+        with open(path, 'rb') as f:
+            img_raw = f.read()
+
         #print index,img_raw
         example = tf.train.Example(
             features=tf.train.Features(
