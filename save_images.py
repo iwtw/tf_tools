@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.misc import imsave
-def save_images(iimages_list,it,epoch):
+def save_images(images_list,it,epoch):
     "images_list : containing elements of same shape in the format of [NCHW]"
     m = len( images_list )
 
