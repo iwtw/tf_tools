@@ -6,17 +6,17 @@ def parse_single_data(file_queue):
     reader = tf.TFRecordReader()
     key, value = reader.read(file_queue)
 
-    if not hasattr(parse_single_data,"features"):
-        parse_single_data.features = {
-            'label': tf.FixedLenFeature([], tf.int64),
-            'img_raw': tf.FixedLenFeature([], tf.string)
-        }
-    example = tf.parse_single_example(value, features=parse_single_data.features)
-
-    image = tf.image.decode_image(example['img_raw'], 3)
+    features = {
+        'label': tf.FixedLenFeature([], tf.int64),
+        #'img_raw': tf.FixedLenFeature([], tf.string)
+        'image_raw': tf.FixedLenFeature([], tf.string)
+    }
+    example = tf.parse_single_example(value, features=features)
+    #image = tf.image.decode_image(example['img_raw'], 3)
+    image = tf.image.decode_image(example['image_raw'], 3)
     #image = tf.decode_raw( example['img_raw'] , uint8 )
     #image.set_shape([None, None, 3])
-    image.set_shape([112,96,3])
+    image.set_shape([None,None,3])
     label = tf.cast(example['label'], tf.int32)
 
     return image, label
@@ -43,15 +43,16 @@ def get_batch(file_queue, image_size, batch_size, n_threads, min_after_dequeue, 
     t_list = []
     for i in range(n_threads):
         image, label = parse_single_data(file_queue)
-        image = preprocessing(image, image_size, is_training = is_training)
+        #image = preprocessing(image, image_size, is_training = is_training)
         image.set_shape([image_size[0], image_size[1], 3])
         t_list.append((image, label))
+    print(t_list)
 
     #batch images
     capacity = min_after_dequeue + (n_threads + 5) * batch_size 
     image_batch, label_batch = tf.train.shuffle_batch_join(
         t_list, batch_size=batch_size, capacity=capacity,
-        min_after_dequeue=min_after_dequeue,enqueue_many=True,
+        min_after_dequeue=min_after_dequeue,#enqueue_many=True,
         name='data')
 
     return image_batch, label_batch
