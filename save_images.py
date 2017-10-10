@@ -9,6 +9,6 @@ def save_images(path , images_list,it,epoch):
     for i in range(  rows ):
         for j in range(  m ):
             outputs[  i*H : (i+1) * H , j * W : (j+1) * W ] = images_list[j][i]
-    imsave( path + "/epoch{}_it{}.jpg".format(it,epoch) , outputs  )
+    imsave( path + "/epoch{}_it{}.jpg".format(epoch,it) , outputs  )
     
     

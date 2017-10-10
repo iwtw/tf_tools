@@ -9,11 +9,11 @@ def parse_single_data(file_queue):
     features = {
         'label': tf.FixedLenFeature([], tf.int64),
         #'img_raw': tf.FixedLenFeature([], tf.string)
-        'image_raw': tf.FixedLenFeature([], tf.string)
+        'img_raw': tf.FixedLenFeature([], tf.string)
     }
     example = tf.parse_single_example(value, features=features)
-    #image = tf.image.decode_image(example['img_raw'], 3)
-    image = tf.image.decode_image(example['image_raw'], 3)
+    image = tf.image.decode_image(example['img_raw'], 3)
+    #image = tf.image.decode_image(example['image_raw'], 3)
     #image = tf.decode_raw( example['img_raw'] , uint8 )
     #image.set_shape([None, None, 3])
     image.set_shape([None,None,3])
