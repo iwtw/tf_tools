@@ -13,6 +13,7 @@ def parse_single_data(file_queue):
     }
     example = tf.parse_single_example(value, features=features)
     image = tf.image.decode_image(example['img_raw'], 3)
+    print(tf.shape(image))
     #image = tf.image.decode_image(example['image_raw'], 3)
     #image = tf.decode_raw( example['img_raw'] , uint8 )
     #image.set_shape([None, None, 3])
@@ -45,8 +46,7 @@ def get_batch(file_queue, image_size, batch_size, n_threads, min_after_dequeue, 
         image, label = parse_single_data(file_queue)
         #image = preprocessing(image, image_size, is_training = is_training)
         image.set_shape([image_size[0], image_size[1], 3])
-        t_list.append((image, label))
-    print(t_list)
+        t_list.append([image,label])
 
     #batch images
     capacity = min_after_dequeue + (n_threads + 5) * batch_size 
