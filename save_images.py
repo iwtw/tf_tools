@@ -8,14 +8,14 @@ def save_training_images( images_list,epoch, output_dir ="training_)output/" ):
         images_list[i] = np.array( images_list[i] )
     N , H , W ,C = images_list[0].shape
     rows = min( N , 10 )
-    outputs = np.zeros((  H*rows,W*m,C))
+    outputs = np.zeros((  H*rows,W*m,C),dtype=np.float32)
     for i in range(  rows ):
         for j in range(  m ):
             outputs[  i*H : (i+1) * H , j * W : (j+1) * W ] = images_list[j][i]
     imsave( output_dir + "/epoch%2d.jpg"%(epoch) , outputs  )
     
 def save_images(  filename_list , images , output_dir = "output/" ):
-    #假设filename_list是输入的list，且以/label/image.png的形式存储
+    #假设filename_list是输入的list，且以/label/image.format的形式存储
     if not os.path.exists(output_dir):
         os.mkdir(output_dir)
     if output_dir[-1] !="/":
